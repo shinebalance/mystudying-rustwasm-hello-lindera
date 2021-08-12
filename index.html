@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>calling-lindera example</title>
+  </head>
+  <body>
+    <form id="form1" action="#">
+      <input type="text" id="input-message">
+      <!-- <input type="button" onclick="callLindera()" value="送信"> -->
+      <p id = "b1"><input type="button" value="Lindera"></p>
+    </form>
+    <script type="module">
+      import init, {greet} from "./pkg/calling_lindera.js";
+
+      b1.onclick = function() {
+      // const callLindera = () => {
+        const textbox = document.getElementById("input-message");
+        const inputValue = textbox.value;
+        let txt = inputValue;
+        // let txt = "イギリス・オックスフォード大学の新型コロナワクチンの開発責任者がデルタ株の感染拡大によって「ワクチン接種が進んでも集団免疫の獲得は不可能」との認識を示しました。"
+        init()
+          .then(() => {
+            greet(txt)
+          });
+        }
+    </script>
+  </body>
+</html>
