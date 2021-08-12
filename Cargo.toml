@@ -12,3 +12,4 @@ crate-type = ["cdylib"]
 lindera = "0.7.1"
 lindera-core = "0.7.1"
 wasm-bindgen = "0.2"
+serde_json = "*"
