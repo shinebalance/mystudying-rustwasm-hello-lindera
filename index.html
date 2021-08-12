@@ -1,3 +1,4 @@
+<!-- 参考：https://developer.mozilla.org/en-US/docs/WebAssembly/Rust_to_wasm-->
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,25 +6,42 @@
     <title>calling-lindera example</title>
   </head>
   <body>
+    <h1>Lindera WASM example</h1>
+    <!-- 入力フォーム -->
     <form id="form1" action="#">
       <input type="text" id="input-message">
-      <!-- <input type="button" onclick="callLindera()" value="送信"> -->
-      <p id = "b1"><input type="button" value="Lindera"></p>
+      <!-- イベントで引っ掛けるためのid -->
+      <p id = "b1">
+        <input type="button" value="Lindera">
+      </p>
     </form>
+    <!-- 後で追記するリスト -->
+    <ul id="resultList">
+    </ul>
+    <!-- JavaScript、moduleじゃないとimportが動かない -->
     <script type="module">
       import init, {greet} from "./pkg/calling_lindera.js";
-
+      // ボタンクリックでWASMの関数を呼ぶ
       b1.onclick = function() {
-      // const callLindera = () => {
         const textbox = document.getElementById("input-message");
         const inputValue = textbox.value;
-        let txt = inputValue;
-        // let txt = "イギリス・オックスフォード大学の新型コロナワクチンの開発責任者がデルタ株の感染拡大によって「ワクチン接種が進んでも集団免疫の獲得は不可能」との認識を示しました。"
+        // どうもinitが必須みたい、Promiseが関連してるらしい
         init()
           .then(() => {
-            greet(txt)
+            // greetはRust内で定義したやつ
+            let fragments = greet(inputValue);
+            // デバッグ用
+            // console.log(fragments);
+            // for文の代わり
+            fragments.forEach( ( flagment, index ) => {
+              // デバッグ用
+              // console.log(flagment.text)
+              var li = document.createElement('li');
+              li.textContent = flagment.text;
+              document.getElementById('resultList').appendChild(li);
+            });
           });
-        }
+      }
     </script>
   </body>
 </html>
